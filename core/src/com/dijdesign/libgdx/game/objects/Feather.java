@@ -4,36 +4,36 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.dijdesign.libgdx.game.util.Assets;
 
-public class GoldCoin extends AbstractGameObject {
-	
-	private TextureRegion regGoldCoin;
-	
+public class Feather extends AbstractGameObject {
+
+	private TextureRegion regFeather;
+
 	public boolean collected;
-	
-	public GoldCoin(){
+
+	public Feather () {
 		init();
 	}
-	
-	private void init() {
+
+	private void init () {
 		dimension.set(0.5f, 0.5f);
-		
-		regGoldCoin = Assets.instance.goldCoin.goldCoin;
-		
-		//Set Bounding Box
+
+		regFeather = Assets.instance.feather.feather;
+
+		// Set bounding box for collision detection
 		bounds.set(0, 0, dimension.x, dimension.y);
-		
+
 		collected = false;
 	}
-	
-	public void render(SpriteBatch batch){
+
+	public void render (SpriteBatch batch) {
 		if (collected) return;
-		
+
 		TextureRegion reg = null;
-		reg = regGoldCoin;
+		reg = regFeather;
 		batch.draw(reg.getTexture(), position.x, position.y, origin.x, origin.y, dimension.x, dimension.y, scale.x, scale.y, rotation, reg.getRegionX(), reg.getRegionY(), reg.getRegionWidth(), reg.getRegionHeight(), false, false);
 	}
-	
-	public int getScore(){
-		return 100;
+
+	public int getScore() {
+		return 250;
 	}
 }
