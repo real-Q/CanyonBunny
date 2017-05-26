@@ -9,6 +9,9 @@ import com.dijdesign.libgdx.game.objects.Clouds;
 import com.dijdesign.libgdx.game.objects.Mountains;
 import com.dijdesign.libgdx.game.objects.Rock;
 import com.dijdesign.libgdx.game.objects.WaterOverlay;
+import com.dijdesign.libgdx.game.objects.BunnyHead;
+import com.dijdesign.libgdx.game.objects.Feather;
+import com.dijdesign.libgdx.game.objects.GoldCoin;
 
 public class Level {
 
@@ -38,19 +41,26 @@ public class Level {
 
 	// objects
 	public Array<Rock> rocks;
+	public Array<GoldCoin> goldCoins;
+	public Array<Feather> feathers;
 
 	// decoration
 	public Clouds clouds;
 	public Mountains mountains;
 	public WaterOverlay waterOverlay;
+	public BunnyHead bunnyHead;
 
 	public Level (String filename) {
 		init(filename);
 	}
 
 	private void init (String filename) {
+		// Player Character
+		bunnyHead = null;
 		// objects
 		rocks = new Array<Rock>();
+		goldCoins =  new Array<GoldCoin>();
+		feathers = new Array<Feather>();
 
 		// load image file that represents the level data
 		Pixmap pixmap = new Pixmap(Gdx.files.internal(filename));
@@ -86,12 +96,24 @@ public class Level {
 				}
 				// player spawn point
 				else if (BLOCK_TYPE.PLAYER_SPAWNPOINT.sameColor(currentPixel)) {
+					obj = new BunnyHead();
+					offsetHeight = -3.0f;
+					obj.position.set(pixelX, baseHeight * obj.dimension.y + offsetHeight);
+					bunnyHead = (BunnyHead)obj;
 				}
 				// feather
 				else if (BLOCK_TYPE.ITEM_FEATHER.sameColor(currentPixel)) {
+					obj = new Feather();
+					offsetHeight = -1.5f;
+					obj.position.set(pixelX, baseHeight * obj.dimension.y + offsetHeight);
+					feathers.add((Feather)obj);
 				}
 				// gold coin
 				else if (BLOCK_TYPE.ITEM_GOLD_COIN.sameColor(currentPixel)) {
+					obj = new GoldCoin();
+					offsetHeight = -1.5f;
+					obj.position.set(pixelX, baseHeight * obj.dimension.y + offsetHeight);
+					goldCoins.add((GoldCoin)obj);
 				}
 				// unknown object/pixel color
 				else {
