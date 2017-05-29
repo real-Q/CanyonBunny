@@ -173,8 +173,10 @@ public class WorldController extends InputAdapter {
 		    // Player Movement
 		    if (Gdx.input.isKeyPressed(Keys.LEFT)) {
 		      level.bunnyHead.velocity.x = -level.bunnyHead.terminalVelocity.x;
+		      Gdx.app.debug(TAG, "Going Left");
 		    } else if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
 		      level.bunnyHead.velocity.x = level.bunnyHead.terminalVelocity.x;
+		      Gdx.app.debug(TAG, "Going right");
 		    } else {
 		      // Execute auto-forward movement on non-desktop platform
 		      if (Gdx.app.getType() != ApplicationType.Desktop) {
