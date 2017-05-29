@@ -46,38 +46,38 @@ public class WorldController extends InputAdapter {
 
 	public void update (float deltaTime) {
 		handleDebugInput(deltaTime);
-		handleGameInput(deltaTime);
+		handleInputGame(deltaTime);
 		level.update(deltaTime);
 		testCollisions();
 		cameraHelper.update(deltaTime);
 	}
 	
-	private void onCollisionBunnyHeadWithRock(Rock rock){
-		BunnyHead bunnyHead = level.bunnyHead;
-		float heightDifference = Math.abs(bunnyHead.position.y - (rock.position.y + rock.bounds.height));
-		if (heightDifference > 0.25f){
-			boolean hitRightEdge = bunnyHead.position.x > (rock.position.x + rock.bounds.width / 2.0f);
-			if (hitRightEdge){
-				bunnyHead.position.x = rock.position.x + rock.bounds.width;
-			} else {
-				bunnyHead.position.x = rock.position.x - bunnyHead.bounds.width;
-			}
-			return;
+	private void onCollisionBunnyHeadWithRock (Rock rock) {
+		  BunnyHead bunnyHead = level.bunnyHead;
+		  float heightDifference = Math.abs(bunnyHead.position.y - (  rock.position.y + rock.bounds.height));
+		  if (heightDifference > 0.25f) {
+		    boolean hitRightEdge = bunnyHead.position.x > ( rock.position.x + rock.bounds.width / 2.0f);
+		    if (hitRightEdge) {
+		      bunnyHead.position.x = rock.position.x + rock.bounds.width;
+		    } else {
+		      bunnyHead.position.x = rock.position.x - bunnyHead.bounds.width;
+		    }
+		    return;
+		  }
+
+		  switch (bunnyHead.jumpState) {
+		    case GROUNDED:
+		      break;
+		    case FALLING:
+		    case JUMP_FALLING:
+		      bunnyHead.position.y = rock.position.y + bunnyHead.bounds.height  + bunnyHead.origin.y;
+		      bunnyHead.jumpState = JUMP_STATE.GROUNDED;
+		      break;
+		    case JUMP_RISING:
+		      bunnyHead.position.y = rock.position.y + bunnyHead.bounds.height + bunnyHead.origin.y;
+		    break;
+		  }
 		}
-		
-		switch (bunnyHead.jumpState){
-		case GROUNDED:
-			break;
-		case FALLING:
-		case JUMP_FALLING:
-			bunnyHead.position.y = rock.position.y + bunnyHead.bounds.height + bunnyHead.origin.y;
-			bunnyHead.jumpState = JUMP_STATE.GROUNDED;
-			break;
-		case JUMP_RISING:
-			bunnyHead.position.y = rock.position.y + bunnyHead.bounds.height + bunnyHead.origin.y;
-			break;
-		}
-	}
 	
 	private void onCollisionBunnyHeadWithGoldCoin(GoldCoin goldCoin){
 		goldCoin.collected = true;
@@ -158,7 +158,7 @@ public class WorldController extends InputAdapter {
 		// Reset game world
 		if (keycode == Keys.R) {
 			init();
-			Gdx.app.debug(TAG, "Game world resetted");
+			Gdx.app.debug(TAG, "Game world reset");
 		}
 		//Toggle camera follow
 		else if (keycode == Keys.ENTER){
@@ -168,26 +168,26 @@ public class WorldController extends InputAdapter {
 		return false;
 	}
 	
-	private void handleGameInput(float deltaTime){
-		if (cameraHelper.hasTarget(level.bunnyHead)){
-			//Player Movement!
-			if (Gdx.input.isKeyPressed(Keys.LEFT)){
-				level.bunnyHead.velocity.x = -level.bunnyHead.terminalVelocity.x;
-			} else if (Gdx.input.isKeyPressed(Keys.RIGHT)){
-				level.bunnyHead.velocity.x = level.bunnyHead.terminalVelocity.x;
-			} else {
-				//Execute auto-forward movement on non-desktop platform
-				if (Gdx.app.getType() != ApplicationType.Desktop){
-					level.bunnyHead.velocity.x = level.bunnyHead.terminalVelocity.x;
-				}
-			}
-			
-			//Bunny Jump
-			if (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Keys.SPACE)){
-				level.bunnyHead.setJumping(true);
-			} else {
-				level.bunnyHead.setJumping(false);
-			}
+	private void handleInputGame (float deltaTime) {
+		  if (cameraHelper.hasTarget(level.bunnyHead)) {
+		    // Player Movement
+		    if (Gdx.input.isKeyPressed(Keys.LEFT)) {
+		      level.bunnyHead.velocity.x = -level.bunnyHead.terminalVelocity.x;
+		    } else if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
+		      level.bunnyHead.velocity.x = level.bunnyHead.terminalVelocity.x;
+		    } else {
+		      // Execute auto-forward movement on non-desktop platform
+		      if (Gdx.app.getType() != ApplicationType.Desktop) {
+		        level.bunnyHead.velocity.x = level.bunnyHead.terminalVelocity.x;
+		      }
+		    }
+
+		    // Bunny Jump
+		    if (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Keys.SPACE)) {
+		      level.bunnyHead.setJumping(true);
+		    } else {
+		      level.bunnyHead.setJumping(false);
+		    }
+		  }
 		}
-	}
 }
